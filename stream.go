@@ -15,10 +15,16 @@ type Stream interface {
 	Max() int
 }
 
-// Integer type pipeline
+// Integer type stream
 type Integer struct {
 	Values []int
 	len    int
+}
+
+// Float type stream
+type Float struct {
+	Values []float64
+	Len    int
 }
 
 // Convert given int slice to a stream
@@ -26,6 +32,18 @@ func (i *Integer) Convert() <-chan int {
 	var out chan int = make(chan int)
 	go func() {
 		for _, num := range i.Values {
+			out <- num
+		}
+		close(out)
+	}()
+	return out
+}
+
+// Convert a given float slice to a stream
+func (f *Float) Convert() <-chan float64 {
+	var out chan float64 = make(chan float64)
+	go func() {
+		for _, num := range f.Values {
 			out <- num
 		}
 		close(out)
