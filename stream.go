@@ -1,5 +1,10 @@
 package stream
 
+const (
+	//Version of this package
+	Version = "0.1.0"
+)
+
 // Stream interface
 type Stream interface {
 	Convert() <-chan int
