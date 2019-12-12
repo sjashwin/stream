@@ -51,6 +51,7 @@ func (i *Integer) Filter(f func(int) bool) {
 	i.Values = buffer
 }
 
+<<<<<<< HEAD
 // Sum of all values in a given float slice
 func (f *Float) Sum() float64 {
 	var sum float64
@@ -100,4 +101,13 @@ func (f *Float) Filter(v func(float64) bool) {
 		}
 	}
 	f.Values = buffer
+=======
+// Map the values of a float slice to a given function
+func (i *Integer) Map(f func(int) int) {
+	var count int
+	for num := range i.Convert() {
+		i.Values[count] = f(num)
+		count++
+	}
+>>>>>>> Stream Functionality: Adds Support For Maps
 }

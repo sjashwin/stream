@@ -62,3 +62,27 @@ func main(){
     fmt.Println(data.Values) // [2, 4]
 }
 ```
+
+Map a slice by passing a desired method
+
+```go
+import (
+    "fmt"
+    "github.com/sjashwin/stream"
+)
+
+func main(){
+    var data stream.Integer = stream.Integer{
+        Values: []int{1, 2, 3, 4, 5},
+    }
+
+    var square(num int) int
+    
+    square = func(num int) int{
+        return num*num
+    }
+
+    data.Map(square)
+    fmt.Println(data.Values) // [1, 4, 9, 16, 25]
+}
+```
