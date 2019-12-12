@@ -53,7 +53,6 @@ func (i *Integer) Filter(f func(int) bool) {
 	i.Values = buffer
 }
 
-<<<<<<< HEAD
 // Sum of all values in a given float slice
 func (f *Float) Sum() float64 {
 	var sum float64
@@ -103,7 +102,8 @@ func (f *Float) Filter(v func(float64) bool) {
 		}
 	}
 	f.Values = buffer
-=======
+}
+
 // Distinct all values are distinct in a given stream of Ints
 func (i *Integer) Distinct() bool {
 	var mode map[int]bool = make(map[int]bool)
@@ -141,5 +141,38 @@ func (i *Integer) ToSlice() []int {
 // Skip the number of elements in the stream
 func (i *Integer) Skip(num int) {
 	i.Values = i.Values[num:]
->>>>>>> Stream Functionalities: Adds More Support To Integer
+}
+
+// Distinct is true if all values in the stream are unique
+func (f *Float) Distinct() bool {
+	var mode map[float64]bool = make(map[float64]bool)
+	for _, v := range f.Values {
+		if _, ok := mode[v]; ok {
+			return false
+		}
+		mode[v] = true
+	}
+	return true
+}
+
+//Peek the elements from the stream
+func (f *Float) Peek() float64 {
+	return f.Values[0]
+}
+
+// ForEach does an operation on each element in the stream
+func (f *Float) ForEach(v func(float64)) {
+	for num := range f.Convert() {
+		v(num)
+	}
+}
+
+// ToSlice converts a stream to its equivalent interface
+func (f Float) ToSlice() []float64 {
+	return f.Values
+}
+
+// Skip the first n values in a given stream
+func (f *Float) Skip(num int) {
+	f.Values = f.Values[num:]
 }
