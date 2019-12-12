@@ -1,5 +1,7 @@
 package stream
 
+import "sort"
+
 // Sum all the values in a given stream
 func (i *Integer) Sum() int {
 	var sum int
@@ -118,4 +120,77 @@ func (f Float) Map(v func(float64) float64) {
 		f.Values[count] = v(num)
 		count++
 	}
+}
+
+// Distinct all values are distinct in a given stream of Ints
+func (i *Integer) Distinct() bool {
+	var mode map[int]bool = make(map[int]bool)
+	for _, v := range i.Values {
+		if _, ok := mode[v]; ok {
+			return false
+		}
+		mode[v] = true
+	}
+	return true
+}
+
+// Peek the elements from the stream
+func (i *Integer) Peek() int {
+	return i.Values[0]
+}
+
+// Sort the given stream
+func (i *Integer) Sort() {
+	sort.Ints(i.Values)
+}
+
+// ForEach does an operation on each element in the stream
+func (i *Integer) ForEach(f func(int)) {
+	for num := range i.Convert() {
+		f(num)
+	}
+}
+
+// ToSlice convert a stream to an Integer slice
+func (i *Integer) ToSlice() []int {
+	return i.Values
+}
+
+// Skip the number of elements in the stream
+func (i *Integer) Skip(num int) {
+	i.Values = i.Values[num:]
+}
+
+// Distinct is true if all values in the stream are unique
+func (f *Float) Distinct() bool {
+	var mode map[float64]bool = make(map[float64]bool)
+	for _, v := range f.Values {
+		if _, ok := mode[v]; ok {
+			return false
+		}
+		mode[v] = true
+	}
+	return true
+}
+
+//Peek the elements from the stream
+func (f *Float) Peek() float64 {
+	return f.Values[0]
+}
+
+// ForEach does an operation on each element in the stream
+func (f *Float) ForEach(v func(float64)) {
+	for num := range f.Convert() {
+		v(num)
+	}
+}
+
+// ToSlice converts a stream to its equivalent interface
+func (f Float) ToSlice() []float64 {
+	return f.Values
+}
+
+// Skip the first n values in a given stream
+func (f *Float) Skip(num int) {
+	f.Values = f.Values[num:]
 }
