@@ -1,5 +1,7 @@
 package stream
 
+import "sort"
+
 // Sum all the values in a given stream
 func (i *Integer) Sum() int {
 	var sum int
@@ -51,6 +53,7 @@ func (i *Integer) Filter(f func(int) bool) {
 	i.Values = buffer
 }
 
+<<<<<<< HEAD
 // Sum of all values in a given float slice
 func (f *Float) Sum() float64 {
 	var sum float64
@@ -100,4 +103,43 @@ func (f *Float) Filter(v func(float64) bool) {
 		}
 	}
 	f.Values = buffer
+=======
+// Distinct all values are distinct in a given stream of Ints
+func (i *Integer) Distinct() bool {
+	var mode map[int]bool = make(map[int]bool)
+	for _, v := range i.Values {
+		if _, ok := mode[v]; ok {
+			return false
+		}
+		mode[v] = true
+	}
+	return true
+}
+
+// Peek the elements from the stream
+func (i *Integer) Peek() int {
+	return i.Values[0]
+}
+
+// Sort the given stream
+func (i *Integer) Sort() {
+	sort.Ints(i.Values)
+}
+
+// ForEach does an operation on each element in the stream
+func (i *Integer) ForEach(f func(int)) {
+	for num := range i.Convert() {
+		f(num)
+	}
+}
+
+// ToSlice convert a stream to an Integer slice
+func (i *Integer) ToSlice() []int {
+	return i.Values
+}
+
+// Skip the number of elements in the stream
+func (i *Integer) Skip(num int) {
+	i.Values = i.Values[num:]
+>>>>>>> Stream Functionalities: Adds More Support To Integer
 }
