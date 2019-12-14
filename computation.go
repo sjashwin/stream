@@ -194,3 +194,52 @@ func (f Float) ToSlice() []float64 {
 func (f *Float) Skip(num int) {
 	f.Values = f.Values[num:]
 }
+
+// Distinct returns true if all the values in given
+// string stream is distinct from each other
+func (s *String) Distinct() bool {
+	var mode map[string]bool = make(map[string]bool)
+	for v := range s.Convert() {
+		if _, ok := mode[v]; ok {
+			return false
+		}
+		mode[v] = true
+	}
+	return true
+}
+
+// Peek returns the first element in a
+// given stream
+func (s *String) Peek() string {
+	return <-s.Convert()
+}
+
+// Skip the first n elements in a string stream
+func (s *String) Skip(num int) {
+	s.Values = s.Values[num:]
+}
+
+// Map the given string stream with a parameter functions.
+// Function parameter takes a string as parameter and returns
+// the string as a value.
+func (s *String) Map(f func(string) string) {
+	for i, v := range s.Values {
+		s.Values[i] = f(v)
+	}
+}
+
+// Filter the stream with the given function parameter
+func (s *String) Filter(f func(string) bool) {
+	var buffer []string = make([]string, 0)
+	for _, v := range s.Values {
+		if f(v) {
+			buffer = append(buffer, v)
+		}
+	}
+	s.Values = buffer
+}
+
+// ToSlice from a string stream
+func (s *String) ToSlice() []string {
+	return s.Values
+}

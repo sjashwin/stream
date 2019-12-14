@@ -27,6 +27,11 @@ type Float struct {
 	Len    int
 }
 
+// String type stream
+type String struct {
+	Values []string
+}
+
 // Convert given int slice to a stream
 func (i *Integer) Convert() <-chan int {
 	var out chan int = make(chan int)
@@ -44,6 +49,18 @@ func (f *Float) Convert() <-chan float64 {
 	var out chan float64 = make(chan float64)
 	go func() {
 		for _, num := range f.Values {
+			out <- num
+		}
+		close(out)
+	}()
+	return out
+}
+
+// Convert a give float slice to a string stream
+func (s *String) Convert() <-chan string {
+	var out chan string = make(chan string)
+	go func() {
+		for _, num := range s.Values {
 			out <- num
 		}
 		close(out)
